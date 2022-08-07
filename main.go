@@ -96,5 +96,5 @@ func main() {
 	}
 
 	// keep the program running.
-	select {}
+	<-make(chan struct{})
 }
