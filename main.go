@@ -5,9 +5,14 @@ import (
 	"gobot/config"
 	"log"
 	"os"
+	"time"
 
 	"github.com/bwmarrin/discordgo"
 )
+
+type Embed struct {
+	*discordgo.MessageEmbed
+}
 
 var BotId string
 var goBot *discordgo.Session
@@ -30,8 +35,9 @@ func Run() error {
 		return err
 	}
 	BotId = user.ID
-	// register the messageCreate func as a callback for MessageCreate events
+
 	goBot.AddHandler(messageCreate)
+
 	err = goBot.Open()
 
 	if err != nil {
@@ -41,6 +47,7 @@ func Run() error {
 
 	fmt.Println("Bot is now running.  Press CTRL-C to exit.")
 	return nil
+
 }
 
 func messageCreate(session *discordgo.Session, message *discordgo.MessageCreate) {
@@ -53,11 +60,54 @@ func messageCreate(session *discordgo.Session, message *discordgo.MessageCreate)
 	if message.Content == "!ping" {
 		session.ChannelMessageSend(message.ChannelID, "pong")
 	}
+	if message.Content == "!heure" {
+		gigamessage := discordgo.MessageEmbed{
+			Title:       "Heure",
+			Description: "L'heure de tes maxis potes",
+			Color:       0x00ff00,
+		}
+
+		// get local time in Paris
+		t := time.Now().In(time.FixedZone("CET", 7200))
+
+		// get montréal time
+
+		t2 := time.Now().In(time.FixedZone("EST", -18000))
+
+		// get ireland time
+
+		t3 := time.Now().In(time.FixedZone("IST", 3600))
+
+		// add fields to embed
+		gigamessage.Fields = []*discordgo.MessageEmbedField{
+			{
+				// put local time in Paris
+				Name:   "France",
+				Value:  t.Format("15:04:05"),
+				Inline: true,
+			},
+			{
+				Name:   "Canada",
+				Value:  t2.Format("15:04:05"),
+				Inline: true,
+			},
+			{
+				Name:   "Irlande",
+				Value:  t3.Format("15:04:05"),
+				Inline: true,
+			},
+		}
+
+		session.ChannelMessageSendEmbed(message.ChannelID, &gigamessage)
+
+	}
 
 }
 
 func main() {
+
 	err := Run()
+
 	if err != nil {
 		log.Fatal(err)
 	}
