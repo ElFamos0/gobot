@@ -55,7 +55,7 @@ func messageCreate(session *discordgo.Session, message *discordgo.MessageCreate)
 		return
 	}
 	if message.Content == "!help" {
-		session.ChannelMessageSend(message.ChannelID, "!help - displays this message\n!ping - pong")
+		session.ChannelMessageSend(message.ChannelID, "!help - displays this message\n!ping - pong\n!heure - affiche les heures des bros")
 	}
 	if message.Content == "!ping" {
 		session.ChannelMessageSend(message.ChannelID, "pong")
