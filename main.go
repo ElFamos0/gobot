@@ -72,7 +72,7 @@ func messageCreate(session *discordgo.Session, message *discordgo.MessageCreate)
 
 		// get montréal time
 
-		t2 := time.Now().In(time.FixedZone("EST", -21600))
+		t2 := time.Now().In(time.FixedZone("EST", -14400))
 
 		// get ireland time
 
